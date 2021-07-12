@@ -28,3 +28,7 @@ fmt.Printf("Address of &a: %p \n"+              //Address of &a: 0xc000014018
            "Address of c: %p \n", &a,&b,&c,c)   //Address of c: 0xc000014018
 ```
 Reference: https://stackoverflow.com/a/21722697/1177962
+
+My current understanding is: `Slice is a container-like while array is a object`
+Example: https://play.golang.org/p/bTrRmYfNYCp
+

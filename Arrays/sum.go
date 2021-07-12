@@ -13,3 +13,14 @@ func SumAll(arr ...[]int) (sums []int) {
 	}
 	return sums
 }
+
+func SumAllTails(arr ...[]int) (sumsTails []int) {
+	for _, numbers := range arr {
+		if len(numbers) == 0 {
+			sumsTails = append(sumsTails, 0)
+		} else {
+			sumsTails = append(sumsTails, Sum(numbers[1:]))
+		}
+	}
+	return sumsTails
+}
