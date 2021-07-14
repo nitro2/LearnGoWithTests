@@ -62,3 +62,15 @@ d := Dictionary{}
 d.Add("D","Days")
 ```
 ... then we get error: `./dictionary.go:19: invalid operation: d[key] (type *Dictionary does not support indexing)`
+
+> A map value is a pointer to a runtime.hmap structure.
+> So when you pass a map to a function/method, you are indeed copying it, but just the pointer part, not the underlying data structure that contains the data.
+
+Initilize a map:
+```
+var dictionary = map[string]string{}
+// OR
+var dictionary = make(map[string]string)
+```
+
+
