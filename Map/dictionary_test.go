@@ -2,6 +2,14 @@ package dictionary
 
 import "testing"
 
+func TestError(t *testing.T) {
+	de := DictionaryErr("TestErr")
+	want := "TestErr"
+
+	if de.Error() != want {
+		t.Errorf("Fail to use DictionaryErr")
+	}
+}
 func TestSearch(t *testing.T) {
 	dictionary := Dictionary{"test": "this is just a test"}
 
