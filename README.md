@@ -113,3 +113,37 @@ for _, n := range numbers {
 // 3
 // Result order is randomly, depend on routines.
 ```
+
+
+## Select
+https://quii.gitbook.io/learn-go-with-tests/go-fundamentals/select
+
+Consider following code:
+
+```
+func Racer(a, b string) (winner string) {
+    select {
+    case <-ping(a):
+        return a
+    case <-ping(b):
+        return b
+    }
+}
+
+func ping(url string) chan struct{} {
+    ch := make(chan struct{})
+    go func() {
+        http.Get(url)
+        close(ch)
+    }()
+    return ch
+}
+```
+
+Why struct{} and not another type like a bool? Well, a chan struct{} is the smallest data type available from a memory perspective so we get no allocation versus a bool. Since we are closing and not sending anything on the chan, why allocate anything?
+
+### Always make channels
+Notice how we have to use make when creating a channel; rather than say var ch chan struct{}. When you use var the variable will be initialised with the "zero" value of the type. So for string it is "", int it is 0, etc.
+For channels the zero value is nil and if you try and send to it with <- **it will block forever because you cannot send to nil channels**
+
+AGAIN: NEVER declare `var ch2 chan bool` because `ch2 <- true` will block forever
