@@ -189,3 +189,54 @@ As my understanding, this is the only risk.
 - Use mutexes for managing state
 
 Use `go vet` to alert some subtle bugs!!!
+
+## Context
+
+https://blog.golang.org/context
+
+> `context.Context` is an `immutable object`, "extending" it with a key-value pair is only possible by making a copy of it and adding the new key-value to the copy
+
+> A Context is safe for simultaneous use by multiple goroutines. Code can pass a single Context to any number of goroutines and cancel that Context to signal all of them.
+
+
+> At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests. This allows Go code developed by many different teams to interoperate well. It provides simple control over timeouts and cancelation and ensures that critical values like security credentials transit Go programs properly.
+
+It's better to manage functions with context.
+```
+- WithCancel() -> Can use it to cancel go routine in background to prevent memory leak.
+- WithDeadline() -> Create a deadline cleanup routine to prevent function from unexpected blocking call. Use absolute time.
+- WithTimeout() -> Similiar to WithDeadline(). Use relative time.
+- WithValue() -> We can start many contexts with different input value. WithValue() needs a pair of key and val interface{}. 
+- Background()
+```
+
+### WithCancel()
+### WithDeadline() vs WithTimeout()
+func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+
+Eg:
+```
+const shortDuration = 1 * time.Millisecond
+d := time.Now().Add(shortDuration)
+ctx, cancel := context.WithDeadline(context.Background(), d)
+defer cancel()
+```
+
+```
+const shortDuration = 1 * time.Millisecond
+ctx, cancel := context.WithTimeout(context.Background(), shortDuration)
+defer cancel()
+```
+
+### WithValue()
+
+`func WithValue(parent Context, key, val interface{}) Context`
+> WithValue(): The provided key must be comparable and **should not be of type string** or **any other built-in type** to avoid collisions between packages using context. 
+
+- https://pkg.go.dev/context#example-WithValue
+- https://stackoverflow.com/questions/40379960/golang-context-withvalue-how-to-add-several-key-value-pairs
+
+> Use context values only for request-scoped data that transits processes and API boundaries, not for passing optional parameters to functions. ??? (Not much understand the statement now)
+
+
