@@ -147,3 +147,45 @@ Notice how we have to use make when creating a channel; rather than say var ch c
 For channels the zero value is nil and if you try and send to it with <- **it will block forever because you cannot send to nil channels**
 
 AGAIN: NEVER declare `var ch2 chan bool` because `ch2 <- true` will block forever
+
+
+## Sync
+
+The book advices us use Mutex as a member of struct rather than embedded it
+
+**SHOULD**:
+```
+type Counter struct {
+	mu    sync.Mutex
+	value int
+}
+
+func (c *Counter) Inc() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.value++
+}
+```
+
+**SHOULD NOT**:
+```
+type Counter struct {
+    sync.Mutex
+    value int
+}
+
+func (c *Counter) Inc() {
+    c.Lock()
+    defer c.Unlock()
+    c.value++
+}
+```
+
+It's harmful because the API can be accidently called outside and drives the flow wrongly.
+As my understanding, this is the only risk.
+
+
+- Use channels when passing ownership of data
+- Use mutexes for managing state
+
+Use `go vet` to alert some subtle bugs!!!
