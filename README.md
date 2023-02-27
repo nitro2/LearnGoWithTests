@@ -75,7 +75,7 @@ var dictionary = make(map[string]string)
 
 
 ## Concurrency
-The go routines do not have their own copy of sharing variables. So they have big chance to fetch the only last values of sharing variables 
+The go routines do not have their own copy of sharing variables. So they have a big chance to fetch the only last values of sharing variables 
 
 ```golang
 	numbers := []int{1, 2, 3, 4}
@@ -91,5 +91,21 @@ The go routines do not have their own copy of sharing variables. So they have bi
 	// 4
 	// 4
 ```
+In above example, each of our go routines have a reference to the `n` variable. Therefore, they all read `n` as `4`.
 
-The go routines started after the loop was executed.
+By passing argument into the go routines, we can make sure the routines use correct values:
+```golang
+	numbers := []int{1, 2, 3, 4}
+	for _, n := range numbers {
+		go func(x int) {
+			fmt.Println(x)
+		}(n)
+	}
+	
+	// Result:
+	// 4
+	// 1
+	// 2
+	// 3
+	// Result order is randomly, depend on routines.
+```
