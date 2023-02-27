@@ -1,17 +1,30 @@
 package reflection
 
 import (
-	"fmt"
 	"reflect"
 )
 
 func walk(x interface{}, fn func(input string)) {
-	val := reflect.ValueOf(x)
+	val := getValue(x)
+
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
-		fmt.Printf("test: %v\n", field)
-		if field.Kind() == reflect.String {
+
+		switch field.Kind() {
+		case reflect.String:
 			fn(field.String())
+		case reflect.Struct:
+			walk(field.Interface(), fn)
 		}
 	}
+}
+
+func getValue(x interface{}) reflect.Value {
+	val := reflect.ValueOf(x)
+
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+
+	return val
 }
