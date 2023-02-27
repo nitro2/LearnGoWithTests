@@ -74,3 +74,22 @@ var dictionary = make(map[string]string)
 ```
 
 
+## Concurrency
+The go routines do not have their own copy of sharing variables. So they have big chance to fetch the only last values of sharing variables 
+
+```golang
+	numbers := []int{1, 2, 3, 4}
+	for _, n := range numbers {
+		go func() {
+			fmt.Println(n)
+		}()
+	}
+	
+	// Result:
+	// 4
+	// 4
+	// 4
+	// 4
+```
+
+The go routines started after the loop was executed.
