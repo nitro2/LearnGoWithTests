@@ -1,0 +1,14 @@
+mode: set
+dictionary/dictionary.go:11.39,13.2 1 0
+dictionary/dictionary.go:17.54,19.9 2 1
+dictionary/dictionary.go:23.2,23.24 1 1
+dictionary/dictionary.go:19.9,21.3 1 1
+dictionary/dictionary.go:26.50,27.18 1 1
+dictionary/dictionary.go:30.2,31.12 2 1
+dictionary/dictionary.go:27.18,29.3 1 1
+dictionary/dictionary.go:34.53,36.24 2 1
+dictionary/dictionary.go:39.2,40.12 2 1
+dictionary/dictionary.go:36.24,38.3 1 1
+dictionary/dictionary.go:43.46,45.16 2 1
+dictionary/dictionary.go:49.2,50.12 2 1
+dictionary/dictionary.go:45.16,47.3 1 1
