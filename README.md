@@ -8,10 +8,12 @@ Happy learning!
 # Notes
 
 ## Array and Slice 
-Array and Slice are DIFFERENT
+Array and Slice are DIFFERENT.
+
 Array is kind of immutable data structure while slice is mutable.
 
 An assignment operation does a copy of every element in array to new location
+
 Eg:
 ```
 a := [3]int{1,2,3} // Define an array
@@ -30,6 +32,7 @@ fmt.Printf("Address of &a: %p \n"+              //Address of &a: 0xc000014018
 Reference: https://stackoverflow.com/a/21722697/1177962
 
 My current understanding is: `Slice is a container-like while array is a object`
+
 Example: https://play.golang.org/p/bTrRmYfNYCp
 
 ## Map
@@ -64,6 +67,7 @@ d.Add("D","Days")
 ... then we get error: `./dictionary.go:19: invalid operation: d[key] (type *Dictionary does not support indexing)`
 
 > A map value is a pointer to a runtime.hmap structure.
+> 
 > So when you pass a map to a function/method, you are indeed copying it, but just the pointer part, not the underlying data structure that contains the data.
 
 Initilize a map:
@@ -78,34 +82,34 @@ var dictionary = make(map[string]string)
 The go routines do not have their own copy of sharing variables. So they have a big chance to fetch the only last values of sharing variables 
 
 ```golang
-	numbers := []int{1, 2, 3, 4}
-	for _, n := range numbers {
-		go func() {
-			fmt.Println(n)
-		}()
-	}
-	
-	// Result:
-	// 4
-	// 4
-	// 4
-	// 4
+numbers := []int{1, 2, 3, 4}
+for _, n := range numbers {
+	go func() {
+		fmt.Println(n)
+	}()
+}
+
+// Result:
+// 4
+// 4
+// 4
+// 4
 ```
 In above example, each of our go routines have a reference to the `n` variable. Therefore, they all read `n` as `4`.
 
 By passing argument into the go routines, we can make sure the routines use correct values:
 ```golang
-	numbers := []int{1, 2, 3, 4}
-	for _, n := range numbers {
-		go func(x int) {
-			fmt.Println(x)
-		}(n)
-	}
-	
-	// Result:
-	// 4
-	// 1
-	// 2
-	// 3
-	// Result order is randomly, depend on routines.
+numbers := []int{1, 2, 3, 4}
+for _, n := range numbers {
+	go func(x int) {
+		fmt.Println(x)
+	}(n)
+}
+
+// Result:
+// 4
+// 1
+// 2
+// 3
+// Result order is randomly, depend on routines.
 ```
