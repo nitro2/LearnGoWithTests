@@ -32,3 +32,33 @@ Reference: https://stackoverflow.com/a/21722697/1177962
 My current understanding is: `Slice is a container-like while array is a object`
 Example: https://play.golang.org/p/bTrRmYfNYCp
 
+## Map
+Map is also a container-like, so we can freely change the content without passing the pointer
+
+```
+type Dictionary map[string]string
+
+func (d Dictionary) Add(key, value string) error {
+	d[key] = value
+	return nil
+}
+...
+d := Dictionary{}
+d.Add("D","Days")
+
+// d -> "D":"Days"
+```
+
+If we use pointer like this:
+```
+type Dictionary map[string]string
+
+func (d *Dictionary) Add(key, value string) error {
+	d[key] = value
+	return nil
+}
+...
+d := Dictionary{}
+d.Add("D","Days")
+```
+... then we get error: `./dictionary.go:19: invalid operation: d[key] (type *Dictionary does not support indexing)`
